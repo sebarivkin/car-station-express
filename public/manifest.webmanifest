@@ -1,0 +1,14 @@
+{
+  "name": "Car Station Express",
+  "short_name": "Car Station",
+  "description": "Lubricentro y taller: clientes, vehículos, services y trabajos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4efe8",
+  "theme_color": "#df2419",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
