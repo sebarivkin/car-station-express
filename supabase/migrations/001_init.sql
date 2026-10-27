@@ -386,5 +386,20 @@ begin
   end loop;
 end $$;
 
+-- Permisos explícitos para la API (funciona aunque el proyecto tenga
+-- desactivado "Automatically expose new tables"). Solo usuarios logueados;
+-- además el RLS exige que el mail esté en la allowlist.
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on
+  public.clientes, public.vehiculos, public.articulos, public.proveedores,
+  public.services, public.service_items, public.trabajos, public.trabajo_repuestos,
+  public.pagos, public.empleados, public.adelantos
+  to authenticated;
+grant select on public.operaciones, public.vehiculos_busqueda to authenticated;
+grant execute on function public.hoy_ar, public.is_allowed, public.guardar_service,
+  public.guardar_trabajo, public.proveedor_por_nombre, public.ajustar_precios
+  to authenticated;
+
+revoke all on public.allowlist from anon, authenticated;
 revoke execute on function public.guardar_service, public.guardar_trabajo,
-  public.proveedor_por_nombre, public.ajustar_precios from anon;
+  public.proveedor_por_nombre, public.ajustar_precios from anon, public;
