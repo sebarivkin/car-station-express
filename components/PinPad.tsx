@@ -15,6 +15,12 @@ export default function PinPad() {
   const enviar = useCallback(
     (valor: string) => {
       start(async () => {
+        // Arranca de cero el contador de inactividad del auto-bloqueo
+        try {
+          localStorage.setItem("cse_actividad", String(Date.now()));
+        } catch {
+          // sin almacenamiento: el auto-bloqueo cuenta desde que abre la página
+        }
         const res = await verificarPin(valor);
         if (res?.error) {
           setError(res.error);
