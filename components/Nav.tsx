@@ -43,9 +43,9 @@ export function Sidebar({ email }: { email: string }) {
   };
 
   return (
-    <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col gap-6 border-r border-line bg-surface px-4 py-5">
+    <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col gap-5 overflow-y-auto overscroll-contain border-r border-line bg-surface px-4 py-5 [scrollbar-width:thin]">
       <Link href="/" className="px-2">
-        <Logo className="h-20" />
+        <Logo className="h-16 [@media(min-height:860px)]:h-20" />
       </Link>
       <div className="flex flex-col gap-2">
         <Link href="/nuevo/service" className="btn btn-primary justify-start">
