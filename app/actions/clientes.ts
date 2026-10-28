@@ -28,7 +28,11 @@ export async function crearCliente(fd: FormData) {
   const supabase = await db();
   const nombre = str(fd, "nombre");
   const v = datosVehiculo(fd);
-  const volver = "/clientes/nuevo";
+  // Si viene desde "Nuevo service / trabajo", al guardar sigue directo con el formulario
+  const sig = str(fd, "siguiente");
+  const siguiente = sig === "service" || sig === "taller" ? sig : null;
+  const volver = siguiente ? `/clientes/nuevo?siguiente=${siguiente}` : "/clientes/nuevo";
+  const destino = (id: string) => (siguiente ? `/vehiculos/${id}/${siguiente}` : `/vehiculos/${id}`);
 
   if (!nombre) backWith(volver, undefined, "Ingresá el nombre del cliente.");
   const err = validarVehiculo(v);
@@ -39,7 +43,7 @@ export async function crearCliente(fd: FormData) {
     .select("id")
     .eq("patente", v.patente)
     .maybeSingle();
-  if (existente) backWith(`/vehiculos/${existente.id}`, undefined, "Esa patente ya estaba cargada: este es el vehículo.");
+  if (existente) backWith(destino(existente.id), undefined, "Esa patente ya estaba cargada: se usa el vehículo existente.");
 
   const { data: cliente, error } = await supabase
     .from("clientes")
@@ -59,7 +63,7 @@ export async function crearCliente(fd: FormData) {
   }
 
   revalidatePath("/");
-  redirect(`/vehiculos/${vehiculo.id}?ok=${encodeURIComponent("Cliente y vehículo guardados")}`);
+  redirect(`${destino(vehiculo.id)}?ok=${encodeURIComponent("Cliente y vehículo guardados")}`);
 }
 
 export async function actualizarCliente(fd: FormData) {

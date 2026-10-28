@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ChevronRight, Plus } from "lucide-react";
+import { Droplets, UserPlus, Wrench } from "lucide-react";
 import SearchBox from "@/components/SearchBox";
 import OperacionList from "@/components/OperacionList";
+import VehiculoCards from "@/components/VehiculoCards";
 import Flash from "@/components/Flash";
-import { Empty, Patente } from "@/components/ui";
+import { Empty } from "@/components/ui";
 import { db } from "@/lib/auth";
-import { fecha } from "@/lib/format";
-import { numeros, type Operacion, type VehiculoBusqueda } from "@/lib/types";
+import { buscarVehiculos } from "@/lib/queries";
+import { numeros, type Operacion } from "@/lib/types";
 
 export default async function InicioPage({
   searchParams,
@@ -16,26 +17,11 @@ export default async function InicioPage({
 }) {
   const { q = "", ok, error } = await searchParams;
   const supabase = await db();
-  // Minúsculas y sin acentos, igual que la columna "texto" de la vista
-  const term = q
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[%_\\]/g, " ")
-    .trim();
+  const buscando = Boolean(q.trim());
 
-  let resultados: VehiculoBusqueda[] = [];
+  const resultados = buscando ? await buscarVehiculos(supabase, q) : [];
   let recientes: Operacion[] = [];
-
-  if (term) {
-    // Cada palabra tiene que aparecer en el dueño, la marca, el modelo o la patente
-    let query = supabase.from("vehiculos_busqueda").select("*");
-    for (const palabra of term.split(/\s+/)) {
-      query = query.ilike("texto", `%${palabra.replace(/-/g, "") || palabra}%`);
-    }
-    const { data } = await query.order("ultima_visita", { ascending: false, nullsFirst: false }).limit(50);
-    resultados = (data ?? []) as VehiculoBusqueda[];
-  } else {
+  if (!buscando) {
     const { data } = await supabase
       .from("operaciones")
       .select("*")
@@ -47,22 +33,50 @@ export default async function InicioPage({
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-        <h1 className="h-display text-3xl sm:text-4xl">Buscar vehículo</h1>
-        <Link href="/clientes/nuevo" className="btn btn-primary">
-          <Plus size={19} strokeWidth={2.6} />
-          Nuevo cliente
-        </Link>
-      </div>
+      <h1 className="h-display mb-5 text-3xl sm:text-4xl">Inicio</h1>
 
       <Flash ok={ok} error={error} />
 
+      {/* Acciones principales */}
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <Link href="/nuevo/service" className="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand sm:p-5">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand text-brand-ink">
+            <Droplets size={21} strokeWidth={2.4} />
+          </span>
+          <span className="leading-tight">
+            <span className="block font-extrabold">Nuevo service</span>
+            <span className="text-sm text-muted">Lubricentro</span>
+          </span>
+        </Link>
+        <Link href="/nuevo/taller" className="card flex items-center gap-3 p-4 hover:ring-2 hover:ring-brand sm:p-5">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand text-brand-ink">
+            <Wrench size={20} strokeWidth={2.4} />
+          </span>
+          <span className="leading-tight">
+            <span className="block font-extrabold">Nuevo trabajo</span>
+            <span className="text-sm text-muted">Taller mecánico</span>
+          </span>
+        </Link>
+        <Link
+          href="/clientes/nuevo"
+          className="card col-span-2 flex items-center gap-3 p-4 hover:ring-2 hover:ring-line sm:col-span-1 sm:p-5"
+        >
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-surface-2 text-text ring-1 ring-line ring-inset">
+            <UserPlus size={20} strokeWidth={2.3} />
+          </span>
+          <span className="leading-tight">
+            <span className="block font-extrabold">Nuevo cliente</span>
+            <span className="text-sm text-muted">Con su vehículo</span>
+          </span>
+        </Link>
+      </div>
+
       <Suspense>
-        <SearchBox placeholder="Dueño, marca, modelo o patente" />
+        <SearchBox placeholder="Buscar por dueño, marca, modelo o patente" />
       </Suspense>
 
       <section className="mt-8">
-        {term ? (
+        {buscando ? (
           <>
             <h2 className="mb-3 text-sm font-extrabold text-muted">
               {resultados.length === 0
@@ -78,31 +92,7 @@ export default async function InicioPage({
                 .
               </Empty>
             ) : (
-              <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {resultados.map((v) => (
-                  <li key={v.id}>
-                    <Link
-                      href={`/vehiculos/${v.id}`}
-                      className="card flex items-center gap-3 p-4 transition-transform active:scale-[0.99] hover:ring-2 hover:ring-line"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <Patente value={v.patente} />
-                          {v.anio && <span className="tabular text-sm text-muted">{v.anio}</span>}
-                        </div>
-                        <p className="mt-2 truncate text-lg font-extrabold">
-                          {v.marca} {v.modelo}
-                        </p>
-                        <p className="truncate text-muted">{v.cliente_nombre}</p>
-                        <p className="mt-1 text-xs font-semibold text-muted">
-                          {v.ultima_visita ? `Última visita ${fecha(v.ultima_visita)}` : "Sin visitas todavía"}
-                        </p>
-                      </div>
-                      <ChevronRight size={20} className="shrink-0 text-muted" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <VehiculoCards vehiculos={resultados} />
             )}
           </>
         ) : (
@@ -110,7 +100,7 @@ export default async function InicioPage({
             <h2 className="mb-3 text-lg font-extrabold">Últimos trabajos</h2>
             {recientes.length === 0 ? (
               <Empty title="Todavía no hay trabajos cargados">
-                Buscá un vehículo o cargá un cliente nuevo para registrar el primer service.
+                Tocá &quot;Nuevo service&quot; o &quot;Nuevo trabajo&quot; para registrar el primero.
               </Empty>
             ) : (
               <OperacionList ops={recientes} />
