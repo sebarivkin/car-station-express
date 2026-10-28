@@ -2,6 +2,7 @@ import ExcelJS from "exceljs";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { fetchAll } from "@/lib/auth";
+import { desbloqueado } from "@/lib/llave";
 import { hoy } from "@/lib/fechas";
 
 // Respaldo completo en un Excel: una hoja por tabla
@@ -11,7 +12,9 @@ export async function GET() {
     data: { user },
   } = await supabase.auth.getUser();
   const { data: permitido } = await supabase.rpc("is_allowed");
-  if (!user || !permitido) return new NextResponse("No autorizado", { status: 401 });
+  if (!user || !permitido || !(await desbloqueado(user.id))) {
+    return new NextResponse("No autorizado", { status: 401 });
+  }
 
   type Row = Record<string, unknown>;
   const all = (tabla: string, select = "*", orden = "created_at") =>

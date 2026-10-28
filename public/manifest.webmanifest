@@ -1,7 +1,7 @@
 {
   "name": "Car Station Express",
   "short_name": "Car Station",
-  "description": "Lubricentro y taller: clientes, vehículos, services y trabajos.",
+  "description": "Car Station Express",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f4efe8",

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { desbloqueado } from "@/lib/llave";
 
 export function supabaseConfigured(): boolean {
   return Boolean(
@@ -17,17 +18,19 @@ export async function getSession() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: permitido } = await supabase.rpc("is_allowed");
-  return { supabase, user, permitido: Boolean(permitido) };
+  const [{ data: permitido }, abierto] = await Promise.all([supabase.rpc("is_allowed"), desbloqueado(user.id)]);
+  return { supabase, user, permitido: Boolean(permitido), desbloqueado: abierto };
 }
 
-/** Cliente de Supabase con sesión válida (para páginas y server actions). */
+/** Cliente de Supabase con sesión válida y la gestión desbloqueada con la clave
+ *  (para páginas y server actions de la gestión). */
 export async function db(): Promise<DB> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+  if (!(await desbloqueado(user.id))) redirect("/bloqueo");
   return supabase;
 }
 

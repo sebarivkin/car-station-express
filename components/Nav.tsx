@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Download, Droplets, LogOut, Menu, Plus, Wrench } from "lucide-react";
+import { Download, Droplets, Lock, LogOut, Menu, Plus, Wrench } from "lucide-react";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { DEUDAS, INICIO, MAS_MOVIL, PRINCIPALES, RESUMEN, SECUNDARIOS, type NavItem as Item } from "@/components/navItems";
 import { cerrarSesion } from "@/app/actions/sesion";
+import { bloquear } from "@/app/actions/bloqueo";
 
 // Formularios de service / trabajo y la elección del vehículo
 function esNuevo(path: string) {
@@ -68,6 +69,12 @@ export function Sidebar({ email }: { email: string }) {
         </a>
       </nav>
       <div className="mt-auto flex flex-col gap-1 border-t border-line pt-4">
+        <form action={bloquear}>
+          <button className="btn btn-ghost w-full justify-start" type="submit">
+            <Lock size={20} />
+            Bloquear
+          </button>
+        </form>
         <ThemeToggle withLabel />
         <form action={cerrarSesion}>
           <button className="btn btn-ghost w-full justify-start" type="submit">
@@ -89,7 +96,14 @@ export function TopBar() {
       <Link href="/" aria-label="Inicio">
         <Logo className="h-11 !p-1" />
       </Link>
-      <ThemeToggle />
+      <div className="flex items-center gap-1">
+        <ThemeToggle />
+        <form action={bloquear}>
+          <button className="btn btn-ghost !px-0 w-11" type="submit" aria-label="Bloquear" title="Bloquear">
+            <Lock size={20} />
+          </button>
+        </form>
+      </div>
     </header>
   );
 }

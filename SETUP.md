@@ -25,12 +25,15 @@ Pasos que hay que hacer **una sola vez**. Todo es gratis.
 ## 2. Configurar las claves en la app
 
 1. En la carpeta del proyecto, copiá `.env.example` como `.env.local`.
-2. Pegá la URL y la key:
+2. Pegá la URL y la key, y un `PIN_SECRET` (cualquier texto largo al azar, sirve para firmar el desbloqueo):
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+PIN_SECRET=una-cadena-larga-al-azar
 ```
+
+Para generar uno: `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"`
 
 ## 3. Crear las tablas
 
@@ -43,6 +46,25 @@ Para sumar otro más adelante:
 ```sql
 insert into public.allowlist (email) values ('otro.mail@gmail.com');
 ```
+
+## 3b. Pantalla de código (claves de gestión y agenda)
+
+Al entrar, la app pide un código de 4 números: uno abre la gestión y el otro una agenda común
+(para que los empleados no vean las ventas). Las claves se guardan cifradas en la base y **nunca
+en el repo** (es público).
+
+1. En el SQL Editor, corré `supabase/migrations/002_claves.sql` completo.
+2. En otra query, cargá las claves reemplazando `XXXX` (gestión) y `YYYY` (agenda). Esta query
+   no se guarda en ningún archivo:
+
+```sql
+update public.seguridad
+   set pin_gestion = extensions.crypt('XXXX', extensions.gen_salt('bf')),
+       pin_agenda  = extensions.crypt('YYYY', extensions.gen_salt('bf'))
+ where id = 1;
+```
+
+Después se pueden cambiar desde la app en **Claves**. Con 5 códigos mal seguidos se bloquea 5 minutos.
 
 ## 4. Login con Google (cuenta de Franco)
 
@@ -78,7 +100,8 @@ los títulos **Artículo**, **Categoría** (opcional), **Costo** y **Venta**. Si
 2. En https://vercel.com, con la cuenta de **Franco** (registrate con su GitHub o su mail) → **Add New → Project**
    → **Import Third-Party Git Repository** → pegá la URL del repo `https://github.com/sebarivkin/car-station-express`.
    Si Vercel pide conectar GitHub, Franco puede usar cualquier cuenta de GitHub suya: al ser público, no necesita permisos sobre tu repo.
-3. En **Environment Variables** cargá las mismas dos variables del `.env.local`.
+3. En **Environment Variables** cargá las tres variables del `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `PIN_SECRET`).
 4. **Deploy**. Te da una URL tipo `https://car-station-express.vercel.app`.
 5. Volvé al paso 4.5 y agregá esa URL en Supabase (Site URL y Redirect URLs).
 6. Desde ahí, cada `git push` publica la nueva versión sola.

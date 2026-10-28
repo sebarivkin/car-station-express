@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { BottomNav, Sidebar, TopBar } from "@/components/Nav";
+import AutoBloqueo from "@/components/AutoBloqueo";
 import Logo from "@/components/Logo";
 import { getSession, supabaseConfigured } from "@/lib/auth";
 import { cerrarSesion } from "@/app/actions/sesion";
@@ -16,7 +18,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const { user, permitido } = await getSession();
+  const { user, permitido, desbloqueado } = await getSession();
+  // La gestión solo se ve después de poner la clave correcta
+  if (permitido && !desbloqueado) redirect("/bloqueo");
 
   if (!permitido) {
     return (
@@ -46,6 +50,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </div>
       </main>
       <BottomNav />
+      <AutoBloqueo />
     </>
   );
 }

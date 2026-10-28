@@ -1,4 +1,4 @@
-import { BarChart3, Droplets, HandCoins, Home, Truck, Users, type LucideIcon } from "lucide-react";
+import { BarChart3, Droplets, HandCoins, Home, KeyRound, Truck, Users, type LucideIcon } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon };
 
@@ -12,6 +12,7 @@ export const PRINCIPALES: NavItem[] = [INICIO, DEUDAS, RESUMEN, ADELANTOS];
 export const SECUNDARIOS: NavItem[] = [
   { href: "/articulos", label: "Artículos", icon: Droplets },
   { href: "/proveedores", label: "Proveedores", icon: Truck },
+  { href: "/claves", label: "Claves", icon: KeyRound },
 ];
 
 /** En el celular, Adelantos va dentro de "Más" para dejar lugar al botón Nuevo */

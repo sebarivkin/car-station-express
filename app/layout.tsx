@@ -12,7 +12,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: "Car Station Express",
-  description: "Lubricentro y taller: clientes, vehículos, services y trabajos.",
+  description: "Car Station Express",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Car Station", statusBarStyle: "default" },
 };
