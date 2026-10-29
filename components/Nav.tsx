@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Download, Droplets, Lock, LogOut, Menu, Plus, Wrench } from "lucide-react";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
+import ToggleVista from "@/components/VistaCliente";
 import { DEUDAS, INICIO, MAS_MOVIL, PRINCIPALES, RESUMEN, SECUNDARIOS, type NavItem as Item } from "@/components/navItems";
 import { cerrarSesion } from "@/app/actions/sesion";
 import { bloquear } from "@/app/actions/bloqueo";
@@ -75,6 +76,7 @@ export function Sidebar({ email }: { email: string }) {
             Bloquear
           </button>
         </form>
+        <ToggleVista variante="menu" />
         <ThemeToggle withLabel />
         <form action={cerrarSesion}>
           <button className="btn btn-ghost w-full justify-start" type="submit">
@@ -97,6 +99,7 @@ export function TopBar() {
         <Logo className="h-11 !p-1" />
       </Link>
       <div className="flex items-center gap-1">
+        <ToggleVista variante="icono" />
         <ThemeToggle />
         <form action={bloquear}>
           <button className="btn btn-ghost !px-0 w-11" type="submit" aria-label="Bloquear" title="Bloquear">

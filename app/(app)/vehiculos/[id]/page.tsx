@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Droplets, Pencil, Phone, Trash2, Wrench } from "lucide-react";
+import { Droplets, FileText, Pencil, Phone, Trash2, Wrench } from "lucide-react";
 import Flash from "@/components/Flash";
 import OperacionList from "@/components/OperacionList";
 import SubmitButton from "@/components/SubmitButton";
@@ -60,6 +60,10 @@ export default async function VehiculoPage({
         <Link href={`/vehiculos/${id}/taller`} className="btn btn-primary">
           <Wrench size={18} strokeWidth={2.5} />
           Nuevo trabajo de taller
+        </Link>
+        <Link href={`/presupuestos/nuevo?vehiculo=${id}`} className="btn btn-secondary">
+          <FileText size={18} />
+          Presupuesto
         </Link>
       </PageHeader>
 

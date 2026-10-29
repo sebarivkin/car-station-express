@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SoloInterno } from "@/components/VistaCliente";
 import BarrasDiarias, { type Punto } from "@/components/BarrasDiarias";
 import { PageHeader, Stat } from "@/components/ui";
 import { db, fetchAll } from "@/lib/auth";
@@ -110,6 +111,7 @@ export default async function DashboardPage({
   const rangoTexto = desde === hasta ? fecha(desde) : `${fecha(desde)} al ${fecha(hasta)}`;
 
   return (
+    <SoloInterno>
     <>
       <PageHeader title="Resumen" />
 
@@ -255,6 +257,7 @@ export default async function DashboardPage({
         </div>
       </div>
     </>
+    </SoloInterno>
   );
 }
 

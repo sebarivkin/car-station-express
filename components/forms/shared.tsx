@@ -114,7 +114,7 @@ export function Resumen({
   total,
   utilidad,
 }: {
-  filas: { label: string; value: number }[];
+  filas: { label: string; value: number; privado?: boolean }[];
   total: number;
   utilidad: number;
 }) {
@@ -122,7 +122,7 @@ export function Resumen({
   return (
     <dl className="flex flex-col gap-2">
       {filas.map((f) => (
-        <div key={f.label} className="flex justify-between text-sm">
+        <div key={f.label} className={`flex justify-between text-sm ${f.privado ? "privado" : ""}`}>
           <dt className="text-muted">{f.label}</dt>
           <dd className="tabular font-bold">{money(f.value)}</dd>
         </div>
@@ -131,7 +131,7 @@ export function Resumen({
         <dt className="font-extrabold">Total</dt>
         <dd className="tabular text-3xl font-black">{money(total)}</dd>
       </div>
-      <div className="flex justify-between text-sm">
+      <div className="privado flex justify-between text-sm">
         <dt className="text-muted">Utilidad</dt>
         <dd className={`tabular font-extrabold ${utilidad < 0 ? "text-brand" : "text-ok"}`}>
           {money(utilidad)} <span className="font-semibold text-muted">({Math.round(margen)}%)</span>

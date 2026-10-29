@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SoloInterno } from "@/components/VistaCliente";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Flash from "@/components/Flash";
 import SubmitButton from "@/components/SubmitButton";
@@ -43,6 +44,7 @@ export default async function EmpleadosPage({
   const fechaDefault = mes === actual ? hoy() : desde;
 
   return (
+    <SoloInterno>
     <div className="max-w-5xl">
       <PageHeader title="Adelantos de sueldo">
         <nav className="flex items-center gap-1 rounded-full bg-surface p-1 shadow-card" aria-label="Mes">
@@ -169,5 +171,6 @@ export default async function EmpleadosPage({
         </aside>
       </div>
     </div>
+    </SoloInterno>
   );
 }

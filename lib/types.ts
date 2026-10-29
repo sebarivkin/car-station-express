@@ -97,3 +97,40 @@ export function numeros<T>(row: T): T {
   for (const k of NUMERICOS) if (k in r && r[k] != null) r[k] = Number(r[k]);
   return r as T;
 }
+
+export type TipoItemPresupuesto = "mano_obra" | "repuesto";
+export type EstadoPresupuesto = "pendiente" | "aceptado" | "rechazado";
+
+export type ItemPresupuesto = {
+  tipo: TipoItemPresupuesto;
+  descripcion: string;
+  cantidad: number;
+  costo_unit: number;
+  precio_unit: number;
+};
+
+export type Presupuesto = {
+  id: string;
+  numero: number;
+  fecha: string;
+  validez_dias: number;
+  vehiculo_id: string | null;
+  cliente_nombre: string;
+  cliente_telefono: string | null;
+  vehiculo_texto: string | null;
+  patente: string | null;
+  notas: string | null;
+  estado: EstadoPresupuesto;
+  trabajo_id: string | null;
+  total: number;
+  costo: number;
+  mano_obra: number;
+};
+
+export type Negocio = {
+  nombre: string;
+  telefono: string | null;
+  direccion: string | null;
+  email: string | null;
+  pie_presupuesto: string | null;
+};

@@ -49,7 +49,7 @@ export default function ArticuloRow({ a }: { a: Articulo }) {
       </div>
       <div className="text-right">
         <p className="tabular font-extrabold">{money(a.precio)}</p>
-        <p className="tabular text-xs text-muted">
+        <p className="privado tabular text-xs text-muted">
           costo {money(a.costo)} · {Math.round(margen)}%
         </p>
       </div>

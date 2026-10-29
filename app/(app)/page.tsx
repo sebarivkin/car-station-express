@@ -96,7 +96,7 @@ export default async function InicioPage({
             )}
           </>
         ) : (
-          <>
+          <div className="privado">
             <h2 className="mb-3 text-lg font-extrabold">Últimos trabajos</h2>
             {recientes.length === 0 ? (
               <Empty title="Todavía no hay trabajos cargados">
@@ -105,7 +105,7 @@ export default async function InicioPage({
             ) : (
               <OperacionList ops={recientes} />
             )}
-          </>
+          </div>
         )}
       </section>
     </>

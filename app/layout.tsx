@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 };
 
 // Aplica el tema guardado antes de pintar (evita el parpadeo)
-const themeScript = `try{var t=localStorage.getItem('tema');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+const themeScript = `try{var t=localStorage.getItem('tema');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;if(localStorage.getItem('vista')==='cliente')document.documentElement.dataset.vista='cliente'}catch(e){}`;
 
 export default function RootLayout({
   children,

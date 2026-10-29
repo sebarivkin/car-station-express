@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SoloInterno } from "@/components/VistaCliente";
 import { Phone } from "lucide-react";
 import OperacionList from "@/components/OperacionList";
 import Flash from "@/components/Flash";
@@ -34,6 +35,7 @@ export default async function DeudasPage({
   const clientes = [...porCliente.values()].sort((a, b) => b.saldo - a.saldo);
 
   return (
+    <SoloInterno>
     <>
       <PageHeader title="Deudas" />
       <Flash ok={ok} error={error} />
@@ -80,5 +82,6 @@ export default async function DeudasPage({
         </div>
       )}
     </>
+    </SoloInterno>
   );
 }

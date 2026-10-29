@@ -1,4 +1,5 @@
 import { Phone, Plus, Trash2 } from "lucide-react";
+import { SoloInterno } from "@/components/VistaCliente";
 import Flash from "@/components/Flash";
 import SubmitButton from "@/components/SubmitButton";
 import { Empty, PageHeader } from "@/components/ui";
@@ -42,6 +43,7 @@ export default async function ProveedoresPage({
   const lista = ((provs ?? []) as Prov[]).sort((a, b) => (totales.get(b.id)?.total ?? 0) - (totales.get(a.id)?.total ?? 0));
 
   return (
+    <SoloInterno>
     <div className="max-w-4xl">
       <PageHeader title="Proveedores" />
       <Flash ok={ok} error={error} />
@@ -114,5 +116,6 @@ export default async function ProveedoresPage({
         </form>
       </div>
     </div>
+    </SoloInterno>
   );
 }

@@ -66,6 +66,11 @@ update public.seguridad
 
 Después se pueden cambiar desde la app en **Claves**. Con 5 códigos mal seguidos se bloquea 5 minutos.
 
+## 3c. Presupuestos
+
+En el SQL Editor, corré `supabase/migrations/003_presupuestos.sql` completo. Después, en la app,
+**Presupuestos → Datos del PDF** para cargar teléfono, dirección y el texto al pie.
+
 ## 4. Login con Google (cuenta de Franco)
 
 1. En https://console.cloud.google.com, con la cuenta de **Franco**, creá un proyecto `car-station-express`.

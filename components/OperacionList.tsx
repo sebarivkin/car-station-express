@@ -26,7 +26,7 @@ export default function OperacionList({
             {mostrarVehiculo && <th>Vehículo</th>}
             <th className="text-right">Km</th>
             <th className="text-right">Total</th>
-            {mostrarUtilidad && <th className="text-right">Utilidad</th>}
+            {mostrarUtilidad && <th className="privado text-right">Utilidad</th>}
             <th>Cobro</th>
           </tr>
         </thead>
@@ -52,7 +52,7 @@ export default function OperacionList({
               )}
               <td className="tabular text-right text-muted">{o.km ? num(o.km) : "—"}</td>
               <td className="tabular text-right font-extrabold">{money(o.total)}</td>
-              {mostrarUtilidad && <td className="tabular text-right text-muted">{money(o.utilidad)}</td>}
+              {mostrarUtilidad && <td className="privado tabular text-right text-muted">{money(o.utilidad)}</td>}
               <td>
                 <EstadoPago saldo={o.saldo} total={o.total} />
               </td>

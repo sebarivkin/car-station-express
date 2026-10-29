@@ -1,4 +1,5 @@
 import { KeyRound } from "lucide-react";
+import { SoloInterno } from "@/components/VistaCliente";
 import Flash from "@/components/Flash";
 import SubmitButton from "@/components/SubmitButton";
 import { PageHeader } from "@/components/ui";
@@ -16,6 +17,7 @@ export default async function ClavesPage({
   const pin = { inputMode: "numeric" as const, pattern: "\\d{4}", maxLength: 4, required: true, autoComplete: "off" };
 
   return (
+    <SoloInterno>
     <div className="max-w-lg">
       <PageHeader title="Claves de acceso" />
       <Flash ok={ok} error={error} />
@@ -50,5 +52,6 @@ export default async function ClavesPage({
         <SubmitButton>Guardar claves</SubmitButton>
       </form>
     </div>
+    </SoloInterno>
   );
 }

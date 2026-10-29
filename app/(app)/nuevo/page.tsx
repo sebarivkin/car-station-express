@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Droplets, UserPlus, Wrench } from "lucide-react";
+import { ChevronRight, Droplets, FileText, UserPlus, Wrench } from "lucide-react";
 import { PageHeader } from "@/components/ui";
 
 // En el celular, el botón "Nuevo" de la barra inferior trae acá
@@ -7,6 +7,7 @@ export default function NuevoPage() {
   const opciones = [
     { href: "/nuevo/service", titulo: "Service de lubricentro", sub: "Aceite, filtros y artículos del catálogo", icon: Droplets, brand: true },
     { href: "/nuevo/taller", titulo: "Trabajo de taller", sub: "Mano de obra y repuestos", icon: Wrench, brand: true },
+    { href: "/presupuestos/nuevo", titulo: "Presupuesto", sub: "Para pasarle al cliente en PDF", icon: FileText, brand: false },
     { href: "/clientes/nuevo", titulo: "Cliente nuevo", sub: "Dueño y vehículo, sin trabajo todavía", icon: UserPlus, brand: false },
   ];
   return (

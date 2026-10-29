@@ -302,3 +302,14 @@ a {
   20%, 60% { transform: translateX(-8px); }
   40%, 80% { transform: translateX(8px); }
 }
+
+/* Vista cliente: oculta costos, ganancia y pantallas internas */
+.solo-cliente {
+  display: none;
+}
+:root[data-vista="cliente"] .privado {
+  display: none !important;
+}
+:root[data-vista="cliente"] .solo-cliente {
+  display: block;
+}

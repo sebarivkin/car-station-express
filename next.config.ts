@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     // Para importar la lista de precios en Excel
     serverActions: { bodySizeLimit: "5mb" },
   },
-  serverExternalPackages: ["exceljs"],
+  serverExternalPackages: ["exceljs", "@react-pdf/renderer"],
 };
 
 export default nextConfig;

@@ -14,6 +14,7 @@ import {
   Resumen,
   type CobroState,
 } from "@/components/forms/shared";
+import { useVistaCliente } from "@/components/VistaCliente";
 
 type Fila = {
   key: number;
@@ -67,6 +68,7 @@ export default function TrabajoForm({
   const [cobro, setCobro] = useState<CobroState>({ estado: "completo", medio: "efectivo", parcial: "" });
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
+  const cliente = useVistaCliente();
 
   const t = useMemo(() => {
     const mo = parseNum(manoObra);
@@ -169,7 +171,7 @@ export default function TrabajoForm({
                     aria-label="Proveedor"
                     className="input"
                   />
-                  <div className="grid grid-cols-[4.5rem_1fr_1fr_2.5rem] items-end gap-2 sm:col-span-2">
+                  <div className={`grid items-end gap-2 sm:col-span-2 ${cliente ? "grid-cols-[4.5rem_1fr_2.5rem]" : "grid-cols-[4.5rem_1fr_1fr_2.5rem]"}`}>
                     <label className="field">
                       <span className="label">Cant.</span>
                       <input
@@ -180,7 +182,7 @@ export default function TrabajoForm({
                         className="input tabular text-right"
                       />
                     </label>
-                    <label className="field">
+                    <label className="privado field">
                       <span className="label">Costo unit.</span>
                       <MoneyInput label="Costo unitario" value={f.costo} onChange={(v) => cambiar(f.key, "costo", v)} />
                     </label>
@@ -216,7 +218,7 @@ export default function TrabajoForm({
           filas={[
             { label: "Mano de obra", value: t.mo },
             { label: "Repuestos (venta)", value: t.venta },
-            { label: "Repuestos (costo)", value: t.costo },
+            { label: "Repuestos (costo)", value: t.costo, privado: true },
           ]}
           total={t.total}
           utilidad={t.utilidad}

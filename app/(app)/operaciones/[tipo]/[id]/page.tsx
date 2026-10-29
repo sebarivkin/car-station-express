@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Pencil, Trash2, X } from "lucide-react";
 import Flash from "@/components/Flash";
 import SubmitButton from "@/components/SubmitButton";
+import ToggleVista from "@/components/VistaCliente";
 import { IconoTipo } from "@/components/OperacionList";
 import { EstadoPago, PageHeader, Patente } from "@/components/ui";
 import { eliminarOperacion, eliminarPago, registrarPago } from "@/app/actions/operaciones";
@@ -64,7 +65,8 @@ export default async function OperacionPage({
           </span>
         }
       >
-        <Link href={`${volver}/editar`} className="btn btn-secondary">
+        <ToggleVista />
+        <Link href={`${volver}/editar`} className="privado btn btn-secondary">
           <Pencil size={16} />
           Editar
         </Link>
@@ -106,7 +108,7 @@ export default async function OperacionPage({
                     <tr>
                       <th className="!pl-5">Descripción</th>
                       <th className="text-right">Cant.</th>
-                      <th className="text-right">Costo</th>
+                      <th className="privado text-right">Costo</th>
                       <th className="text-right">Venta</th>
                       <th className="!pr-5 text-right">Subtotal</th>
                     </tr>
@@ -119,7 +121,7 @@ export default async function OperacionPage({
                           {r.proveedores?.nombre && <span className="block text-xs text-muted">{r.proveedores.nombre}</span>}
                         </td>
                         <td className="tabular text-right">{num(r.cantidad)}</td>
-                        <td className="tabular text-right text-muted">{money(r.costo_unit)}</td>
+                        <td className="privado tabular text-right text-muted">{money(r.costo_unit)}</td>
                         <td className="tabular text-right">{money(r.precio_unit)}</td>
                         <td className="tabular !pr-5 text-right font-extrabold">{money(r.cantidad * r.precio_unit)}</td>
                       </tr>
@@ -140,11 +142,11 @@ export default async function OperacionPage({
 
         <aside className="flex flex-col gap-5">
           <dl className="card flex flex-col gap-2 p-5">
-            <div className="flex justify-between text-sm">
+            <div className="privado flex justify-between text-sm">
               <dt className="text-muted">Costo</dt>
               <dd className="tabular font-bold">{money(op.costo)}</dd>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="privado flex justify-between text-sm">
               <dt className="text-muted">Utilidad</dt>
               <dd className="tabular font-extrabold text-ok">{money(op.utilidad)}</dd>
             </div>
@@ -211,7 +213,7 @@ export default async function OperacionPage({
             )}
           </section>
 
-          <form action={eliminarOperacion}>
+          <form action={eliminarOperacion} className="privado">
             <input type="hidden" name="tipo" value={tipo} />
             <input type="hidden" name="id" value={id} />
             <input type="hidden" name="vehiculo_id" value={op.vehiculo_id} />

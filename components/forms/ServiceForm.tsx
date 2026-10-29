@@ -15,6 +15,7 @@ import {
   Resumen,
   type CobroState,
 } from "@/components/forms/shared";
+import { useVistaCliente } from "@/components/VistaCliente";
 
 type Fila = {
   key: number;
@@ -59,6 +60,9 @@ export default function ServiceForm({
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
   const buscadorRef = useRef<HTMLInputElement>(null);
+  // Sin la columna de costo cuando se le muestra la pantalla al cliente
+  const cliente = useVistaCliente();
+  const cols = cliente ? "md:grid-cols-[1fr_5rem_8rem_2.5rem]" : "md:grid-cols-[1fr_5rem_8rem_8rem_2.5rem]";
 
   const sugerencias = useMemo(() => {
     const t = busqueda.trim().toLowerCase();
@@ -203,17 +207,17 @@ export default function ServiceForm({
             </p>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">
-              <li className="hidden grid-cols-[1fr_5rem_8rem_8rem_2.5rem] gap-2 px-1 text-xs font-extrabold text-muted md:grid">
+              <li className={`hidden gap-2 px-1 text-xs font-extrabold text-muted md:grid ${cols}`}>
                 <span>Artículo</span>
                 <span className="text-right">Cant.</span>
-                <span className="text-right">Costo unit.</span>
+                <span className="privado text-right">Costo unit.</span>
                 <span className="text-right">Venta unit.</span>
                 <span />
               </li>
               {filas.map((f) => (
                 <li
                   key={f.key}
-                  className="grid grid-cols-[1fr_2.5rem] gap-2 rounded-xl bg-surface-2 p-3 md:grid-cols-[1fr_5rem_8rem_8rem_2.5rem] md:items-center md:bg-transparent md:p-0"
+                  className={`grid grid-cols-[1fr_2.5rem] gap-2 rounded-xl bg-surface-2 p-3 md:items-center md:bg-transparent md:p-0 ${cols}`}
                 >
                   <input
                     value={f.descripcion}
@@ -229,7 +233,7 @@ export default function ServiceForm({
                   >
                     <Trash2 size={18} />
                   </button>
-                  <div className="col-span-2 grid grid-cols-3 gap-2 md:contents">
+                  <div className={`col-span-2 grid gap-2 md:contents ${cliente ? "grid-cols-2" : "grid-cols-3"}`}>
                     <label className="field md:block">
                       <span className="label md:sr-only">Cant.</span>
                       <input
@@ -240,7 +244,7 @@ export default function ServiceForm({
                         className="input tabular text-right"
                       />
                     </label>
-                    <label className="field md:block">
+                    <label className="privado field md:block">
                       <span className="label md:sr-only">Costo</span>
                       <MoneyInput label="Costo unitario" value={f.costo} onChange={(v) => cambiar(f.key, "costo", v)} />
                     </label>
@@ -264,7 +268,7 @@ export default function ServiceForm({
       </div>
 
       <aside className="card flex flex-col gap-5 p-5 lg:sticky lg:top-8">
-        <Resumen filas={[{ label: "Costo", value: totales.costo }]} total={totales.total} utilidad={totales.utilidad} />
+        <Resumen filas={[{ label: "Costo", value: totales.costo, privado: true }]} total={totales.total} utilidad={totales.utilidad} />
         {!inicial && <CobroFields value={cobro} onChange={setCobro} total={totales.total} />}
         <FormError error={error} />
         <button type="button" onClick={guardar} disabled={pending} className="btn btn-primary !min-h-12 w-full text-base">

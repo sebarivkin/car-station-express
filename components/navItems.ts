@@ -1,4 +1,4 @@
-import { BarChart3, Droplets, HandCoins, Home, KeyRound, Truck, Users, type LucideIcon } from "lucide-react";
+import { BarChart3, Droplets, FileText, HandCoins, Home, KeyRound, Truck, Users, type LucideIcon } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon };
 
@@ -6,8 +6,9 @@ export const INICIO: NavItem = { href: "/", label: "Inicio", icon: Home };
 export const DEUDAS: NavItem = { href: "/deudas", label: "Deudas", icon: HandCoins };
 export const RESUMEN: NavItem = { href: "/dashboard", label: "Resumen", icon: BarChart3 };
 export const ADELANTOS: NavItem = { href: "/empleados", label: "Adelantos", icon: Users };
+export const PRESUPUESTOS: NavItem = { href: "/presupuestos", label: "Presupuestos", icon: FileText };
 
-export const PRINCIPALES: NavItem[] = [INICIO, DEUDAS, RESUMEN, ADELANTOS];
+export const PRINCIPALES: NavItem[] = [INICIO, PRESUPUESTOS, DEUDAS, RESUMEN, ADELANTOS];
 
 export const SECUNDARIOS: NavItem[] = [
   { href: "/articulos", label: "Artículos", icon: Droplets },
@@ -16,4 +17,4 @@ export const SECUNDARIOS: NavItem[] = [
 ];
 
 /** En el celular, Adelantos va dentro de "Más" para dejar lugar al botón Nuevo */
-export const MAS_MOVIL: NavItem[] = [ADELANTOS, ...SECUNDARIOS];
+export const MAS_MOVIL: NavItem[] = [PRESUPUESTOS, ADELANTOS, ...SECUNDARIOS];
