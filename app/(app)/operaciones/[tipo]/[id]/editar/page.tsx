@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import ServiceForm from "@/components/forms/ServiceForm";
 import TrabajoForm from "@/components/forms/TrabajoForm";
+import EliminarOperacion from "@/components/EliminarOperacion";
 import VehiculoTitulo from "@/components/VehiculoTitulo";
 import { PageHeader } from "@/components/ui";
 import { db } from "@/lib/auth";
@@ -38,6 +39,7 @@ export default async function EditarOperacionPage({ params }: { params: Promise<
           hoy={hoy()}
           inicial={{ id, fecha: s.fecha, km: s.km, notas: s.notas, items }}
         />
+        <Borrar tipo="service" id={id} vehiculoId={s.vehiculo_id} />
       </>
     );
   }
@@ -73,6 +75,15 @@ export default async function EditarOperacionPage({ params }: { params: Promise<
           repuestos,
         }}
       />
+      <Borrar tipo="taller" id={id} vehiculoId={t.vehiculo_id} />
     </>
+  );
+}
+
+function Borrar(props: { tipo: "service" | "taller"; id: string; vehiculoId: string }) {
+  return (
+    <div className="mt-8 max-w-5xl border-t border-line pt-5">
+      <EliminarOperacion {...props} boton="btn btn-danger btn-sm" />
+    </div>
   );
 }

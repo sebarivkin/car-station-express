@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
+import EliminarOperacion from "@/components/EliminarOperacion";
 import Flash from "@/components/Flash";
 import SubmitButton from "@/components/SubmitButton";
 import ToggleVista from "@/components/VistaCliente";
 import { IconoTipo } from "@/components/OperacionList";
 import { EstadoPago, PageHeader, Patente } from "@/components/ui";
-import { eliminarOperacion, eliminarPago, registrarPago } from "@/app/actions/operaciones";
+import { eliminarPago, registrarPago } from "@/app/actions/operaciones";
 import { db } from "@/lib/auth";
 import { hoy } from "@/lib/fechas";
 import { fecha, money, num } from "@/lib/format";
@@ -70,6 +71,7 @@ export default async function OperacionPage({
           <Pencil size={16} />
           Editar
         </Link>
+        <EliminarOperacion tipo={tipo} id={id} vehiculoId={op.vehiculo_id} />
       </PageHeader>
 
       <p className="-mt-3 mb-5 flex flex-wrap items-center gap-2 text-muted">
@@ -213,19 +215,6 @@ export default async function OperacionPage({
             )}
           </section>
 
-          <form action={eliminarOperacion} className="privado">
-            <input type="hidden" name="tipo" value={tipo} />
-            <input type="hidden" name="id" value={id} />
-            <input type="hidden" name="vehiculo_id" value={op.vehiculo_id} />
-            <SubmitButton
-              className="btn btn-danger btn-sm w-full"
-              pendingText="Eliminando…"
-              confirm={`¿Eliminar este ${esService ? "service" : "trabajo"} con sus cobros? No se puede deshacer.`}
-            >
-              <Trash2 size={15} />
-              Eliminar {esService ? "service" : "trabajo"}
-            </SubmitButton>
-          </form>
         </aside>
       </div>
     </div>
